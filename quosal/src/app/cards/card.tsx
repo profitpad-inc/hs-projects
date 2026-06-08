@@ -1,11 +1,11 @@
 import {
   CrmContext,
-  EmptyState,
   ExtensionPointApiActions,
-  Link,
   Text,
 } from '@hubspot/ui-extensions';
-import { hubspot } from '@hubspot/ui-extensions';
+import { hubspot, logger } from '@hubspot/ui-extensions';
+import { useCrmProperties } from '@hubspot/ui-extensions/crm';
+
 
 interface CrmExtensionProps {
   context: CrmContext;
@@ -17,25 +17,26 @@ hubspot.extend<'crm.record.tab'>(({ context, actions }: CrmExtensionProps) => (
 ));
 
 const CrmExtension = ({ context, actions }: CrmExtensionProps) => {
-  const appCardDocsLink =
-    'https://developers.hubspot.com/docs/apps/developer-platform/add-features/ui-extensibility/app-cards/overview';
 
-  console.log({ context, actions });
+  const { properties: deal, isLoading: dealLoading, error: dealError } = useCrmProperties([
+    'dealname',
+    'region_deal',
+    'machine_type',
+    'amount',
+    'state_province',
+    'industry_deal',
+    'hs_object_id',
+  ]);
+
+  logger.debug(JSON.stringify(deal, null, 2));
 
   return (
     <>
-      <EmptyState
-        title="Build your app card here!"
-        layout="vertical"
-        imageName="building"
-      >
         <Text>
           Add a layer of UI customization to your app by including app cards
-          that can display data, allow users to perform actions, and more. Check
-          out the <Link href={appCardDocsLink}>app card documentation</Link> for
-          more info.
+          that can display data.
+          {JSON.stringify(deal, null, 2)}
         </Text>
-      </EmptyState>
     </>
   );
 };
