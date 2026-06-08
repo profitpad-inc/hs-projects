@@ -1,22 +1,16 @@
 import {
-  CrmContext,
-  ExtensionPointApiActions,
   Text,
+  TextArea,
 } from '@hubspot/ui-extensions';
 import { hubspot, logger } from '@hubspot/ui-extensions';
 import { useCrmProperties } from '@hubspot/ui-extensions/crm';
 
 
-interface CrmExtensionProps {
-  context: CrmContext;
-  actions: ExtensionPointApiActions<'crm.record.tab'>;
-}
-
-hubspot.extend<'crm.record.tab'>(({ context, actions }: CrmExtensionProps) => (
-  <CrmExtension context={context} actions={actions} />
+hubspot.extend<'crm.record.tab'>(() => (
+  <QuosalCard />
 ));
 
-const CrmExtension = ({ context, actions }: CrmExtensionProps) => {
+const QuosalCard = () => {
 
   const { properties: deal, isLoading: dealLoading, error: dealError } = useCrmProperties([
     'dealname',
@@ -28,15 +22,21 @@ const CrmExtension = ({ context, actions }: CrmExtensionProps) => {
     'hs_object_id',
   ]);
 
-  logger.debug(JSON.stringify(deal, null, 2));
+  // logger.debug(JSON.stringify(deal, null, 2));
 
   return (
     <>
-        <Text>
-          Add a layer of UI customization to your app by including app cards
-          that can display data.
-          {JSON.stringify(deal, null, 2)}
-        </Text>
+      <Text>
+        Add a layer of UI customization to your app by including app cards
+        that can display data.
+      </Text>
+      <TextArea
+          label="Deal"
+          name="deal"
+          value={JSON.stringify(deal, null, 2)}
+          resize="vertical"
+          rows={8}
+        />
     </>
   );
 };
