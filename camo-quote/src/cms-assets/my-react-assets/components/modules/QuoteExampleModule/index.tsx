@@ -82,7 +82,7 @@ export const fields = (
 );
 
 export const meta = {
-  label: 'Quote Example Module',
+  label: 'Camo Example Module',
   content_types: ['QUOTE', 'QUOTE_BLUEPRINT'],
 };
 
